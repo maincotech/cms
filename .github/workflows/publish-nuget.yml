@@ -1,0 +1,30 @@
+name: Publish Packages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Publish NuGet Maincotech.Cms.Core
+      uses: brandedoutcast/publish-nuget@v2.5.5
+      with:
+          PROJECT_FILE_PATH: src/Maincotech.Cms.Core/Maincotech.Cms.Core.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish NuGet Maincotech.Cms.Blazor
+      uses: brandedoutcast/publish-nuget@v2.5.5
+      with:
+          PROJECT_FILE_PATH: src/Maincotech.Cms.Blazor/Maincotech.Cms.Blazor.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
