@@ -1,0 +1,87 @@
+﻿@page "/categories"
+
+@inherits RuiComponentBase<IndexViewModel>
+
+<AntDesign.Pro.Layout.PageContainer Title="@L["Category.Index.CategoryList"]">
+    <Breadcrumb>
+        <Breadcrumb>
+            <BreadcrumbItem>Home</BreadcrumbItem>
+            <BreadcrumbItem>@L["Breadcrumb.Categories"]</BreadcrumbItem>
+        </Breadcrumb>
+    </Breadcrumb>
+
+    <ChildContent>
+        <div class="cardList">
+            <AntList TItem="Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>"
+                     DataSource="ViewModel.Categories"
+                     ItemLayout="ListItemLayout.Horizontal"
+                     Grid="_listGridType"
+                     Loading="IsLoading">
+                <ListItem NoFlex Grid="_listGridType">
+                    @if (context == null)
+                    {
+                        <Button Type="dashed" class="newButton" OnClick="ViewModel.Create">
+                            <Icon Type="plus" Theme="outline" /> @L["Category.Index.AddCategory"]
+                        </Button>
+                    }
+                    else
+                    {
+                        <Card Hoverable Bordered Class="card" Actions="GetOptions(context.Data.Id)">
+                            <Body>
+                                <CardMeta>
+                                    <AvatarTemplate>
+                                        <img alt="" class="cardAvatar" src="@context.Data.Icon" />
+                                    </AvatarTemplate>
+                                    <TitleTemplate>
+                                        <a>@context.Data.Name</a>
+                                    </TitleTemplate>
+                                    <DescriptionTemplate>
+                                        <Paragraph class="item" Ellipsis>
+                                            @context.Data.Description
+                                        </Paragraph>
+                                    </DescriptionTemplate>
+                                </CardMeta>
+                                <Divider>Children</Divider>
+                                <Tree ShowIcon="true" DataSource="context.Children" TitleExpression="x => ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).Data.Name"
+                                      ChildrenExpression="x =>  ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).Children"
+                                      IconExpression="x => ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).Data.Icon"
+                                      IsLeafExpression="x => ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).IsLeaf">
+                                    <TitleTemplate Context="node">
+                                        <span>@node.Title</span>
+                                        <Icon Type="edit" Theme="outline" OnClick="() => ViewModel.Edit(((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)node.DataItem).Data.Id)" />
+                                    </TitleTemplate>
+
+                                    <TitleIconTemplate Context="node">
+                                        <Avatar Size="small" Shape="square" Src="@node.Icon" />
+                                    </TitleIconTemplate>
+                                </Tree>
+                            </Body>
+                        </Card>
+                    }
+                </ListItem>
+            </AntList>
+        </div>
+    </ChildContent>
+</AntDesign.Pro.Layout.PageContainer>
+
+@code
+{
+    private RenderFragment[] GetOptions(Guid id)
+    {
+        var result = new List<RenderFragment>();
+        result.Add(GetEditOption(id));
+        return result.ToArray();
+    }
+    private RenderFragment GetEditOption(Guid id)
+    {
+        RenderFragment option =@<a @onclick="() => ViewModel.Edit(id)" key="option1">Edit</a>;
+return option;
+}
+private static readonly RenderFragment Operate =@<a key="option1">Edit</a>;
+
+private readonly RenderFragment[] _actions =
+{
+        Operate,
+@<a key="option2">Save</a>,
+    };
+}

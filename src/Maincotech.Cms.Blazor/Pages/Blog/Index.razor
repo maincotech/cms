@@ -1,0 +1,67 @@
+﻿@page "/blogs"
+@inherits RuiComponentBase<IndexViewModel>
+
+<AntDesign.Pro.Layout.PageContainer Title="@L["Blog.Index.BlogList"]">
+    <Breadcrumb>
+        <Breadcrumb>
+            <BreadcrumbItem>Home</BreadcrumbItem>
+            <BreadcrumbItem>@L["Breadcrumb.Blogs"]</BreadcrumbItem>
+        </Breadcrumb>
+    </Breadcrumb>
+    <Content>
+        <div style="text-align: center;">
+            <Search Placeholder="@L["Placeholder.SearchInput"]"
+                    EnterButton="@L["Button.Search"]"
+                    @bind-Value="ViewModel.SearchText"
+                    Size="large"
+                    Style="max-width: 522px; width: 100%;" OnSearch="() => Search()" />
+        </div>
+    </Content>
+    <ExtraContent>
+        <div class="extraImg">
+            <img alt="这是一个标题"
+                 src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png" />
+        </div>
+    </ExtraContent>
+    <ChildContent>
+        <Card>
+            <Form Model="ViewModel" Loading="ViewModel.IsLoadingCategories"
+                  Layout="inline">
+                <StandardFormRow Title="@L["Blog.Index.ParentCategory"]" Block Style="padding-bottom: 11px">
+                    <FormItem>
+                        <TagSelect CollapseText="@L["Button.Collapse"]" ExpandText="@L["Button.Expand"]" SelectAllText="@L["Button.SelectAll"]" Expandable Value="ViewModel.SelectedCategories" OnValueChanged="(values) => Search()">
+                            @foreach (var item in ViewModel.Categories)
+                            {
+                                <TagSelectOption Value="@item.Id.ToString()" Tooltip="@item.Description">@item.Name</TagSelectOption>
+                            }
+                        </TagSelect>
+                    </FormItem>
+                </StandardFormRow>
+            </Form>
+        </Card>
+        <Card>
+            <ChildContent>
+                <Skeleton Loading="IsLoading">
+                    <Button Type="dashed" Style="width: 100%; margin-bottom: 8px;" OnClick="Create">
+                        <Icon Type="plus" Theme="outline" />@L["Button.Add"]
+                    </Button>
+                    <AntList TItem="BlogViewModel"
+                             Size="large"
+                             Class="articleList"
+                             ItemLayout="ListItemLayout.Vertical"
+                             DataSource="ViewModel.Items">
+                        <ListItem NoFlex>
+                            <ListItemMeta Description="">
+                                <TitleTemplate>
+                                    <a href="@GetEditLink(context.Id)">@context.Title</a>
+                                </TitleTemplate>
+                            </ListItemMeta>
+                            <ArticleBriefView Data="@context" />
+                        </ListItem>
+                    </AntList>
+                    <Pagination PageIndex="ViewModel.PageNumber" Total="ViewModel.Total" PageSize="ViewModel.PageSize" OnPageIndexChange="(index) =>Search()"></Pagination>
+                </Skeleton>
+            </ChildContent>
+        </Card>
+    </ChildContent>
+</AntDesign.Pro.Layout.PageContainer>
