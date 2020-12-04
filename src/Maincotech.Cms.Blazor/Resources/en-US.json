@@ -33,5 +33,6 @@
   "Blog.Edit.Tags": "Tags",
   "Blog.Edit.ContentLanguage": "Content Language",
   "Blog.Edit.Settings": "Settings",
-  "Blog.Edit.PageName": "Page name"
+  "Blog.Edit.PageName": "Page name",
+  "Blog.Preview": "Preview"
 }

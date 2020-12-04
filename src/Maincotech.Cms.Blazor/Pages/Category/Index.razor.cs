@@ -25,11 +25,8 @@ namespace Maincotech.Cms.Pages.Category
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            if(ViewModel.IsLoading)
-            {
-                return; //skip if the loading progress is already in progress.
-            }
-            IsLoading = true;
+
+            _IsLoading = true;
             ViewModel.Load.Execute().Subscribe(items => { },
                 ex =>
                 {
@@ -55,6 +52,16 @@ namespace Maincotech.Cms.Pages.Category
                     InvokeAsync(StateHasChanged);
                 }
             }
+        }
+
+        public void Create()
+        {
+            NavigationManager.NavigateTo("/admin/categories/edit");
+        }
+
+        public void Edit(Guid id)
+        {
+            NavigationManager.NavigateTo($"/admin/categories/edit/{id}", forceLoad: true);
         }
     }
 }

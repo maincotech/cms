@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Maincotech.Localization;
+using Microsoft.AspNetCore.Components;
 
 namespace Maincotech.Cms.Pages.Blog
 {
     public partial class ArticleBriefView
     {
+        [Inject] public ILocalizer L { get; set; }
         [Parameter] public BlogViewModel Data { get; set; }
 
         private string GetBriefData()

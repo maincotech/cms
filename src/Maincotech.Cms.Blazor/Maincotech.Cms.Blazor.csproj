@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
     <RootNamespace>Maincotech.Cms</RootNamespace>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Minghao Li</Authors>
     <Company>Maincotech</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -28,7 +28,8 @@
 
 
   <ItemGroup>
-    <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-201103141915" />
+    <PackageReference Include="AntDesign" Version="0.4.1" />
+    <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-201124043855" />
     <PackageReference Include="Maincotech.Blazor" Version="1.0.1" />
     <PackageReference Include="Maincotech.Web.Components" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.9" />

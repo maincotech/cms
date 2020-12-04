@@ -20,7 +20,7 @@
                 <ListItem NoFlex Grid="_listGridType">
                     @if (context == null)
                     {
-                        <Button Type="dashed" class="newButton" OnClick="ViewModel.Create">
+                        <Button Type="dashed" class="newButton" OnClick="Create">
                             <Icon Type="plus" Theme="outline" /> @L["Category.Index.AddCategory"]
                         </Button>
                     }
@@ -48,7 +48,7 @@
                                       IsLeafExpression="x => ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).IsLeaf">
                                     <TitleTemplate Context="node">
                                         <span>@node.Title</span>
-                                        <Icon Type="edit" Theme="outline" OnClick="() => ViewModel.Edit(((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)node.DataItem).Data.Id)" />
+                                        <Icon Type="edit" Theme="outline" OnClick="() => Edit(((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)node.DataItem).Data.Id)" />
                                     </TitleTemplate>
 
                                     <TitleIconTemplate Context="node">
@@ -74,7 +74,7 @@
     }
     private RenderFragment GetEditOption(Guid id)
     {
-        RenderFragment option =@<a @onclick="() => ViewModel.Edit(id)" key="option1">Edit</a>;
+        RenderFragment option =@<a @onclick="() => Edit(id)" key="option1">Edit</a>;
 return option;
 }
 private static readonly RenderFragment Operate =@<a key="option1">Edit</a>;

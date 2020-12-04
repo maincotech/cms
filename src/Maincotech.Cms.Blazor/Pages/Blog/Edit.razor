@@ -37,13 +37,14 @@
                                 @if (ViewModel.IsLoaded)
                                 {
                                     <Select Mode="tags"
+                                            TItem="string"
                                             @bind-Value="context.Tags"
                                             DefaultValue="context.CurrentTags"
                                             Style="width: 100%"
                                             Placeholder="@L["Placeholder.InputTags"]">
                                         @foreach (var item in ViewModel.AllTags)
                                         {
-                                            <SelectOption Value="@item">@item</SelectOption>
+                                            <SelectOption TItem="string" TItemValue="@item">@item</SelectOption>
                                         }
                                     </Select>
                                 }

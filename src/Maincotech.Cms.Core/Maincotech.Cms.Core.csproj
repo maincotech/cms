@@ -6,7 +6,7 @@
     <Version>1.0.1</Version>
     <Authors>Minghao Li</Authors>
     <Company>Maincotech</Company>
-    <Description>CMS Core Libs inlcuding data service and application service</Description>
+    <Description>CMS Core Libs including data service and application service</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/maincotech/cms</PackageProjectUrl>
     <RepositoryUrl>https://github.com/maincotech/cms</RepositoryUrl>

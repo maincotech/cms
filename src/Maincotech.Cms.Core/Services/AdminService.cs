@@ -74,7 +74,7 @@ namespace Maincotech.Cms.Services
 
         public async Task<IEnumerable<CategoryDto>> GetCategories(SortGroup sortGroup, FilterCondition filters)
         {
-            var entities = await _categoryRepository.GetAll(sortGroup, filters).ToListAsync();
+            var entities =  _categoryRepository.GetAll(sortGroup, filters);
             return entities.To<List<CategoryDto>>();
         }
 

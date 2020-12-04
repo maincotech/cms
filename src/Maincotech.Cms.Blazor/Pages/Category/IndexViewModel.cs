@@ -1,6 +1,5 @@
 ﻿using Maincotech.Cms.Services;
 using Maincotech.Data;
-using Microsoft.AspNetCore.Components;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -24,11 +23,8 @@ namespace Maincotech.Cms.Pages.Category
 
         public ReactiveCommand<Unit, IEnumerable<TreeExtensions.ITree<CategoryViewModel>>> Load { get; }
 
-        private NavigationManager _navigationManager;
-
-        public IndexViewModel(NavigationManager navigationManager)
+        public IndexViewModel()
         {
-            _navigationManager = navigationManager;
             _dataAdminService = AppRuntimeContext.Current.Resolve<IAdminService>();
             Load = ReactiveCommand.CreateFromTask(LoadAll);
             _categories = Load.ToProperty(this, x => x.Categories, scheduler: RxApp.MainThreadScheduler);
@@ -38,25 +34,17 @@ namespace Maincotech.Cms.Pages.Category
             });
 
             this.WhenAnyObservable(x => x.Load.IsExecuting).ToProperty(this, x => x.IsLoading, out _isLoading);
-            Load.Execute(Unit.Default).Subscribe();
+            // Load.Execute(Unit.Default).Subscribe();
 
             //Create = ReactiveCommand.Create(() => _navigationManager.NavigateTo("/categories/edit"));
         }
 
-        public void Create()
-        {
-            _navigationManager.NavigateTo("/admin/categories/edit");
-        }
-
-        public void Edit(Guid id)
-        {
-            _navigationManager.NavigateTo($"/admin/categories/edit/{id}", forceLoad: true);
-        }
+   
 
         private async Task<IEnumerable<TreeExtensions.ITree<CategoryViewModel>>> LoadAll()
-        {            
+        {
             var result = new List<TreeExtensions.ITree<CategoryViewModel>>() { null };
-            var entities = await _dataAdminService.GetCategories(null, null);
+            var entities = await _dataAdminService.GetCategories(null, null).ConfigureAwait(false);
             var viewModels = AppRuntimeContext.Current.Adapt<List<CategoryViewModel>>(entities);
             TreeExtensions.ITree<CategoryViewModel> virtualRootNode = viewModels.ToTree((parent, child) => child.ParentId == parent.Id.ToString(), x => x.Name);
             result.AddRange(virtualRootNode.Children);
