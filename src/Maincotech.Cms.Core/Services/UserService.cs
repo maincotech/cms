@@ -102,6 +102,10 @@ namespace Maincotech.Cms.Services
             {
                 throw new FileNotFoundException(pageName);
             }
+            entity.Views++;
+            _articleRepository.Update(entity);
+            _articleRepository.Context.Commit();
+
             entity.Category = await _localizationService.GetLocalizedEntity<Category>(entity.Category, cultureCode);
             var dto = entity.To<LocalizedArticleDto>();
             var tags = _articleTagRepository.FindAll(CmsSpecifications.TagsWithArticleId(entity.Id), x => x.Target).Select(x => x.Target.Name);
@@ -113,10 +117,20 @@ namespace Maincotech.Cms.Services
             return dto;
         }
 
-        public async Task Like(Guid id)
+        public async Task Like(Guid id, bool isLike = false)
         {
             var entity = _articleRepository.GetByKey(id);
-            entity.Likes++;
+            if (isLike)
+            {
+                entity.Likes++;
+            }
+            else
+            {
+                if (entity.Likes > 0)
+                {
+                    entity.Likes--;
+                }
+            }
             _articleRepository.Update(entity);
             _articleRepository.Context.Commit();
         }

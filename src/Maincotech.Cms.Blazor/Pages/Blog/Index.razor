@@ -1,65 +1,73 @@
 ﻿@page "/blogs"
 @inherits RuiComponentBase<IndexViewModel>
-<AntDesign.Pro.Layout.PageContainer Title="@L["Blog.Index.BlogList"]">
-    <Breadcrumb>
-        <Breadcrumb>
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>@L["Breadcrumb.Blogs"]</BreadcrumbItem>
-        </Breadcrumb>
-    </Breadcrumb>
-    <Content>
-        <div style="text-align: center;">
-            <Search Placeholder="@L["Placeholder.SearchInput"]"
-                    EnterButton="@L["Button.Search"]"
-                    @bind-Value="ViewModel.SearchText"
-                    Size="large"
-                    Style="max-width: 522px; width: 100%;" OnSearch="() => Search()" />
-        </div>
-    </Content>
-    <ExtraContent>
-        <div class="extraImg">
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png" />
-        </div>
-    </ExtraContent>
-    <ChildContent>
-        <Card>
-            <Form Model="ViewModel" Loading="ViewModel.IsLoadingCategories"
-                  Layout="inline">
-                <StandardFormRow Title="@L["Blog.Index.ParentCategory"]" Block Style="padding-bottom: 11px">
-                    <FormItem>
-                        <TagSelect CollapseText="@L["Button.Collapse"]" ExpandText="@L["Button.Expand"]" SelectAllText="@L["Button.SelectAll"]" Expandable Value="ViewModel.SelectedCategories" OnValueChanged="(values) => Search()">
-                            @foreach (var item in ViewModel.Categories)
-                            {
-                                <TagSelectOption Value="@item.Id.ToString()" Tooltip="@item.Description">@item.Name</TagSelectOption>
-                            }
-                        </TagSelect>
-                    </FormItem>
-                </StandardFormRow>
-            </Form>
-        </Card>
-        <Card>
-            <ChildContent>
-                <Skeleton Loading="IsLoading">
-                    <Button Type="dashed" Style="width: 100%; margin-bottom: 8px;" OnClick="Create">
-                        <Icon Type="plus" Theme="outline" />@L["Button.Add"]
-                    </Button>
-                    <AntList TItem="BlogViewModel"
-                             Size="large"
-                             Class="articleList"
-                             ItemLayout="ListItemLayout.Vertical"
-                             DataSource="ViewModel.Items">
-                        <ListItem NoFlex>
-                            <ListItemMeta Description="">
-                                <TitleTemplate>
-                                    <a href="@GetEditLink(context.Id)">@context.Title</a>
-                                </TitleTemplate>
-                            </ListItemMeta>
-                            <ArticleBriefView Data="@context" />
-                        </ListItem>
-                    </AntList>
-                    <Pagination PageIndex="ViewModel.PageNumber" Total="ViewModel.Total" PageSize="ViewModel.PageSize" OnPageIndexChange="(index) =>Search()"></Pagination>
-                </Skeleton>
-            </ChildContent>
-        </Card>
-    </ChildContent>
-</AntDesign.Pro.Layout.PageContainer>
+
+@if (IndexViewModel != null)
+{
+    <AntDesign.Pro.Layout.PageContainer>
+
+        <Content>
+            <div style="text-align: center;background-color:transparent">
+                <Search Placeholder="@L["Placeholder.SearchBlog"]"
+                        EnterButton="@L["Button.Search"]"
+                        @bind-Value="IndexViewModel.SearchText"
+                        Size="large"
+                        Style="max-width: 522px; width: 100%;" OnSearch="Search" />
+            </div>
+        </Content>
+        <ChildContent>
+            <Row Gutter="24">
+                <AntDesign.Col Span="5">
+                    <Card Style="margin-bottom: 24px;" Title="@L["Blogs.Categories"]" Loading="IndexViewModel.IsLoadingCategories"
+                          BodyStyle="padding: 15px;">
+                        @if (IndexViewModel.Categories?.Any() == true)
+                        {
+                            <TagSelect CollapseText="@L["Button.Collapse"]" ExpandText="@L["Button.Expand"]" Expandable HideCheckAll Value="IndexViewModel.SelectedCategories" OnValueChanged="(values) => Search()">
+                                @foreach (var item in IndexViewModel.Categories)
+                                {
+                                    <TagSelectOption Value="@item.CategoryId.ToString()">@($"{item.CategoryName} ({item.Count})")</TagSelectOption>
+                                }
+                            </TagSelect>
+                        }
+                    </Card>
+                </AntDesign.Col>
+                <AntDesign.Col Span="15">
+                    <Card Loading="IsLoading" BodyStyle="padding: 8px 32px 32px 32px;">
+                        @if (ViewModel.Items?.Any() == true)
+                        {
+                            <AntList TItem="BlogViewModel"
+                                     Size="large"
+                                     Class="articleList"
+                                     ItemLayout="ListItemLayout.Vertical"
+                                     DataSource="ViewModel.Items">
+                                <ListItem NoFlex Actions="@(new[] { iconText(("read",context.Views)),iconText(("like",context.Likes)),iconText(("message",context.CommentsCount)) })">
+                                    <ListItemMeta Description="@context.Summary">
+                                        <AvatarTemplate>
+                                            <img width="100" alt="@context.Title" src="@context.Cover" />
+                                        </AvatarTemplate>
+                                        <TitleTemplate>
+                                            <a href=@($"/{L.CurrentCulture.Name}/blogs/{context.PageName}")>@context.Title</a>
+                                        </TitleTemplate>
+                                    </ListItemMeta>
+                                </ListItem>
+                            </AntList>
+                        }
+                        else
+                        {
+                            <Empty />
+                        }
+                    </Card>
+                </AntDesign.Col>
+            </Row>
+        </ChildContent>
+    </AntDesign.Pro.Layout.PageContainer>
+}
+
+@code{
+    RenderFragment<(string icon, string text)> iconText = context =>
+    @<Template>
+        <Space>
+            <SpaceItem><Icon Type="@context.icon" /></SpaceItem>
+            <SpaceItem>@context.text</SpaceItem>
+        </Space>
+    </Template>                                       ;
+}

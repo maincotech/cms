@@ -3,8 +3,8 @@ using AutoMapper;
 using Maincotech.Adapter;
 using Maincotech.Cms.Dto;
 using Maincotech.Cms.Models;
-using Maincotech.Cms.Pages.Blog;
-using Maincotech.Cms.Pages.Category;
+using Maincotech.Cms.Pages.Admin.Blog;
+using Maincotech.Cms.Pages.Admin.Category;
 using Maincotech.Data;
 
 using System;

@@ -19,10 +19,16 @@ namespace Maincotech.Cms
 
         public CmsOptions Options { get; }
 
-        public CmsOptionsBuilder UseLayout(Type layoutType)
+        public CmsOptionsBuilder UseAdminLayout(Type layoutType)
         {
-            Options.Layout = layoutType;
+            Options.AdminLayout = layoutType;
 
+            return this;
+        }
+
+        public CmsOptionsBuilder UseUserLayout(Type layoutType)
+        {
+            Options.UserLayout = layoutType;
             return this;
         }
 
@@ -46,9 +52,15 @@ namespace Maincotech.Cms
             return this;
         }
 
-        public CmsOptionsBuilder UseAreaName(IServiceProvider serviceProvider, string areaName)
+        public CmsOptionsBuilder UseAdminAreaName(IServiceProvider serviceProvider, string areaName)
         {
-            Options.AreaName = areaName;
+            Options.AdminAreaName = areaName;
+            return this;
+        }
+
+        public CmsOptionsBuilder UseUserAreaName(IServiceProvider serviceProvider, string areaName)
+        {
+            Options.UserAreaName = areaName;
             return this;
         }
     }

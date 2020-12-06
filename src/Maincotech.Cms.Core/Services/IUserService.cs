@@ -12,7 +12,7 @@ namespace Maincotech.Cms.Services
 
         Task<LocalizedArticleDto> GetLocalizedArticle(string pageName, string cultureCode);
 
-        Task Like(Guid id);
+        Task Like(Guid id, bool isLike = true);
 
         Task<IEnumerable<CategoryArticlesDto>> GetCategoryArticles(string cultureCode);
 

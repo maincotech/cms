@@ -2,8 +2,8 @@
 using AutoMapper;
 using Maincotech.Adapter;
 using Maincotech.Cms.Dto;
-using Maincotech.Cms.Pages.Blog;
-using Maincotech.Cms.Pages.Category;
+using Maincotech.Cms.Pages.Admin.Blog;
+using Maincotech.Cms.Pages.Admin.Category;
 using Maincotech.Data;
 using System;
 using System.Collections.Generic;
@@ -30,6 +30,10 @@ namespace Maincotech.Cms.Blazor.MapperProfiles
               .ForMember(dest => dest.CategoryId, opt => opt.MapFrom((src, dest, destMember, context) => src.CategoryId.ToString()))
               .ForMember(dest => dest.CurrentTags, opt => opt.MapFrom((src, dest, destMember, context) => src.Tags.IsNotNullOrEmpty() ? src.Tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>()))
               .ForMember(dest => dest.PageName, opt => opt.MapFrom((src, dest, destMember, context) => src.PageName.Replace(".html", "")));
+
+
+            CreateMap<LocalizedArticleDto, Maincotech.Cms.Pages.Blog.BlogViewModel>();
+
         }
 
         private static List<CascaderNode> Convert(List<CategoryDto> src)

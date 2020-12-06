@@ -9,7 +9,9 @@ namespace Maincotech.Cms
         public string JqueryUpload { get; set; }
         public string VditorUpload { get; set; }
         public List<string> SupportLanguages { get; set; }
-        public string AreaName { get; set; }
-        public Type Layout { get; set; }
+        public string AdminAreaName { get; set; }
+        public string UserAreaName { get; set; }
+        public Type AdminLayout { get; set; }
+        public Type UserLayout { get; set; }
     }
 }

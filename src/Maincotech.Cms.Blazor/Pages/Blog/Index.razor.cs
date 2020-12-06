@@ -23,13 +23,6 @@ namespace Maincotech.Cms.Pages.Blog
             }
         }
 
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-            await ViewModel.LoadCategories();
-            Search();
-        }
-
         private void Search()
         {
             IsLoading = true;
@@ -45,15 +38,44 @@ namespace Maincotech.Cms.Pages.Blog
                 });
         }
 
-        private void Create()
+        private bool _IsLoadingCategories;
+
+        public bool IsLoadingCategories
         {
-            var targetPath = Options.AreaName.IsNullOrEmpty() ? "/Blogs/Edit" : $"/{Options.AreaName}/Blogs/Edit";
-            NavigationManager.NavigateTo(targetPath);
+            get => _IsLoadingCategories;
+            set
+            {
+                if (_IsLoadingCategories != value)
+                {
+                    _IsLoadingCategories = value;
+                    InvokeAsync(StateHasChanged);
+                }
+            }
         }
 
-        private string GetEditLink(string id)
+        private void LoadCategories()
         {
-            return Options.AreaName.IsNullOrEmpty() ? $"/Blogs/Edit/{id}" : $"/{Options.AreaName}/Blogs/Edit/{id}";
+            if(ViewModel.Categories.IsNullOrEmpty())
+            {
+                IsLoadingCategories = true;
+                ViewModel.LoadCategories.Execute().Subscribe(items => { },
+                    ex =>
+                    {
+                        Console.WriteLine(ex);
+                        IsLoadingCategories = false;
+                    },
+                    () =>
+                    {
+                        IsLoadingCategories = false;
+                    });
+            }            
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            LoadCategories();
+            Search();
         }
     }
 }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>Maincotech.Cms</RootNamespace>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Minghao Li</Authors>
     <Company>Maincotech</Company>
     <Description>CMS Core Libs including data service and application service</Description>

@@ -1,12 +1,10 @@
-﻿using DynamicData;
-using Maincotech.Cms.Dto;
+﻿using Maincotech.Cms.Dto;
 using Maincotech.Data;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 namespace Maincotech.Cms.Pages.Blog
@@ -15,14 +13,20 @@ namespace Maincotech.Cms.Pages.Blog
     {
         private static Maincotech.Logging.ILogger _Logger = AppRuntimeContext.Current.GetLogger<IndexViewModel>();
 
-        private readonly Maincotech.Cms.Services.IAdminService _dataAdminService;
+        private Maincotech.Cms.Services.IUserService _service;
         private readonly ObservableAsPropertyHelper<IEnumerable<BlogViewModel>> _items;
         public IEnumerable<BlogViewModel> Items => _items.Value;
-
         private readonly ObservableAsPropertyHelper<bool> _isLoading;
         public bool IsLoading => _isLoading.Value;
 
+        private readonly ObservableAsPropertyHelper<IEnumerable<CategoryArticlesDto>> _categories;
+        public IEnumerable<CategoryArticlesDto> Categories => _categories.Value;
+        private readonly ObservableAsPropertyHelper<bool> _IsLoadingCategories;
+        public bool IsLoadingCategories => _IsLoadingCategories.Value;
+
         public ReactiveCommand<Unit, IEnumerable<BlogViewModel>> Load { get; }
+
+        public ReactiveCommand<Unit, IEnumerable<CategoryArticlesDto>> LoadCategories { get; }
 
         //    public ReactiveCommand<Unit, Unit> Create { get; }
 
@@ -34,7 +38,7 @@ namespace Maincotech.Cms.Pages.Blog
 
         public IndexViewModel()
         {
-            _dataAdminService = AppRuntimeContext.Current.Resolve<Maincotech.Cms.Services.IAdminService>();
+            _service = AppRuntimeContext.Current.Resolve<Maincotech.Cms.Services.IUserService>();
             Load = ReactiveCommand.CreateFromTask(LoadAll);
             _items = Load.ToProperty(this, x => x.Items, scheduler: RxApp.MainThreadScheduler);
             Load.ThrownExceptions.Subscribe(exception =>
@@ -44,12 +48,14 @@ namespace Maincotech.Cms.Pages.Blog
 
             this.WhenAnyObservable(x => x.Load.IsExecuting).ToProperty(this, x => x.IsLoading, out _isLoading);
 
-            //Load.Execute(Unit.Default).Subscribe(exception =>
-            //{
-            //    _Logger.Error("Unexpected error occurred.", exception);
-            //});
+            LoadCategories = ReactiveCommand.CreateFromTask(LoadBlogCategories);
+            _categories = LoadCategories.ToProperty(this, x => x.Categories, scheduler: RxApp.MainThreadScheduler);
+            LoadCategories.ThrownExceptions.Subscribe(exception =>
+            {
+                _Logger.Error("Unexpected error occurred.", exception);
+            });
 
-            //Create = ReactiveCommand.Create(() => _navigationManager.NavigateTo("/categories/edit"));
+            this.WhenAnyObservable(x => x.LoadCategories.IsExecuting).ToProperty(this, x => x.IsLoadingCategories, out _IsLoadingCategories);
         }
 
         private async Task<IEnumerable<BlogViewModel>> LoadAll()
@@ -96,7 +102,7 @@ namespace Maincotech.Cms.Pages.Blog
                 },
                 FilterCondition = filterRules
             };
-            var entities = await _dataAdminService.GetPagedArticles(pageQuery);
+            var entities = await _service.GetArticles(CultureInfo.CurrentCulture.Name, pageQuery);
             Total = entities.TotalRecords;
             if (entities.Count > 0)
             {
@@ -107,29 +113,9 @@ namespace Maincotech.Cms.Pages.Blog
             return result;
         }
 
-        public ObservableCollection<CategoryDto> Categories { get; set; } = new ObservableCollection<CategoryDto>();
-
-        private bool _IsLoadingCategories;
-
-        public bool IsLoadingCategories
+        public async Task<IEnumerable<CategoryArticlesDto>> LoadBlogCategories()
         {
-            get => _IsLoadingCategories;
-            set => this.RaiseAndSetIfChanged(ref _IsLoadingCategories, value);
-        }
-
-        public async Task LoadCategories()
-        {
-            try
-            {
-                IsLoadingCategories = true;
-                Categories.Clear();
-                var categories = await _dataAdminService.GetArticleCategories();
-                Categories.AddRange(categories);
-            }
-            finally
-            {
-                IsLoadingCategories = false;
-            }
+            return await _service.GetCategoryArticles(CultureInfo.CurrentCulture.Name);
         }
     }
 }
