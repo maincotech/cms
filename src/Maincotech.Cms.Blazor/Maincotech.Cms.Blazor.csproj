@@ -30,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="AntDesign" Version="0.4.1" />
     <PackageReference Include="AntDesign.Pro.Layout" Version="0.1.0-nightly-201124043855" />
-    <PackageReference Include="Maincotech.Blazor" Version="1.0.1" />
+    <PackageReference Include="Maincotech.Blazor" Version="1.0.4" />
     <PackageReference Include="Maincotech.Web.Components" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.9" />
