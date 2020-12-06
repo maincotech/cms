@@ -1,0 +1,58 @@
+﻿@page "/blogs/{PageName}"
+
+@inherits RuiComponentBase<BlogViewModel>
+
+<AntDesign.Pro.Layout.PageContainer>
+    <Content>
+        <div style="text-align: center;background-color:transparent">
+            <Search Placeholder="@L["Placeholder.SearchBlog"]"
+                    EnterButton="@L["Button.Search"]"
+                    @bind-Value="IndexViewModel.SearchText"
+                    Size="large"
+                    Style="max-width: 522px; width: 100%;" OnSearch="Search" />
+        </div>
+    </Content>
+    <ChildContent>
+        <Row Gutter="24">
+            <AntDesign.Col Span="5">
+                <Card Style="margin-bottom: 24px;" Title="@L["Blogs.Categories"]" Loading="IsLoadingCategories"
+                      BodyStyle="padding: 15px;">
+                    @if (IndexViewModel.Categories?.Any() == true)
+                    {
+                        <TagSelect CollapseText="@L["Button.Collapse"]" ExpandText="@L["Button.Expand"]" Expandable HideCheckAll Value="IndexViewModel.SelectedCategories" OnValueChanged="(values) => Search()">
+                            @foreach (var item in IndexViewModel.Categories)
+                            {
+                                <TagSelectOption Value="@item.CategoryId.ToString()">@($"{item.CategoryName} ({item.Count})")</TagSelectOption>
+                            }
+                        </TagSelect>
+                    }
+                </Card>
+            </AntDesign.Col>
+            <AntDesign.Col Span="15">
+                <Card Loading="IsLoading" Title="@ViewModel.Title">
+                    <Extra>
+                        <Tooltip Title="@("Like")">
+                            <Icon Type="like" Class="code-box-expand-trigger" Theme="@(isLike ? "fill" : "outline")" OnClick="Like" />
+                        </Tooltip>
+
+                        <Popover Trigger="@(new AntDesign.TriggerType[] { AntDesign.TriggerType.Hover})">
+                            <ContentTemplate>
+                                <div>
+                                    <p><Button Icon="link" Type="link" OnClick="@(async _=>await Copy())">Copy Link</Button></p>
+                                </div>
+                            </ContentTemplate>
+                            <ChildContent>
+                                <Icon Type="share-alt" Class="code-box-expand-trigger" />
+                            </ChildContent>
+                        </Popover>
+                    </Extra>
+                    <Body>
+                        <article>
+                            @((MarkupString)ViewModel.HtmlContent)
+                        </article>
+                    </Body>
+                </Card>
+            </AntDesign.Col>
+        </Row>
+    </ChildContent>
+</AntDesign.Pro.Layout.PageContainer>
