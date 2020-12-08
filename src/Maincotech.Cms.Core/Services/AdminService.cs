@@ -74,7 +74,7 @@ namespace Maincotech.Cms.Services
 
         public async Task<IEnumerable<CategoryDto>> GetCategories(SortGroup sortGroup, FilterCondition filters)
         {
-            var entities =  _categoryRepository.GetAll(sortGroup, filters);
+            var entities = _categoryRepository.GetAll(sortGroup, filters);
             return entities.To<List<CategoryDto>>();
         }
 
@@ -132,7 +132,10 @@ namespace Maincotech.Cms.Services
             }
             else
             {
-                _articleSEORepository.Remove(new ArticleSEO { Id = entity.Id });
+                if (_articleSEORepository.Exists(CmsSpecifications.ArticleSEOWithId(entity.Id)))
+                {
+                    _articleSEORepository.Remove(new ArticleSEO { Id = entity.Id });
+                }
             }
             _articleRepository.Context.Commit();
         }

@@ -25,5 +25,10 @@ namespace Maincotech.Cms
         {
             return Specification<Article>.Eval(entity => entity.PageName == pageName);
         }
+
+        public static ISpecification<ArticleSEO> ArticleSEOWithId(Guid id)
+        {
+            return Specification<ArticleSEO>.Eval(entity => entity.Id == id);
+        }
     }
 }
