@@ -44,7 +44,7 @@
                                             Placeholder="@L["Placeholder.InputTags"]">
                                         @foreach (var item in ViewModel.AllTags)
                                         {
-                                            <SelectOption TItem="string" TItemValue="@item">@item</SelectOption>
+                                            <SelectOption Value="@item">@item</SelectOption>
                                         }
                                     </Select>
                                 }
