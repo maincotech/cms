@@ -14,7 +14,7 @@
     </Content>
     <ChildContent>
         <Row Gutter="24">
-            <AntDesign.Col Span="5">
+            <AntDesign.Col Span="8">
                 <Card Style="margin-bottom: 24px;" Title="@L["Blogs.Categories"]" Loading="IsLoadingCategories"
                       BodyStyle="padding: 15px;">
                     @if (IndexViewModel.Categories?.Any() == true)
@@ -28,7 +28,7 @@
                     }
                 </Card>
             </AntDesign.Col>
-            <AntDesign.Col Span="15">
+            <AntDesign.Col Span="16">
                 <Card Loading="IsLoading" Title="@ViewModel.Title">
                     <Extra>
                         <Tooltip Title="@("Like")">
