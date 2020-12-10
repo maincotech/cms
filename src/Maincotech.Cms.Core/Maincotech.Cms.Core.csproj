@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net50</TargetFrameworks>
     <RootNamespace>Maincotech.Cms</RootNamespace>
-    <Version>1.0.4</Version>
+    <Version>1.2.0</Version>
     <Authors>Minghao Li</Authors>
     <Company>Maincotech</Company>
     <Description>CMS Core Libs including data service and application service</Description>
@@ -14,6 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Maincotech.Core" Version="1.0.6" />
+    <PackageReference Include="Maincotech.Core" Version="1.2.0" />
   </ItemGroup>
 </Project>
