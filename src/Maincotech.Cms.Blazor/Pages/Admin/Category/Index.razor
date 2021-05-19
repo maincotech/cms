@@ -2,15 +2,19 @@
 
 @inherits RuiComponentBase<IndexViewModel>
 
-<AntDesign.Pro.Layout.PageContainer Title="@L["Category.Index.CategoryList"]">
-    <Breadcrumb>
+<PageHeader>
+    <PageHeaderBreadcrumb>
         <Breadcrumb>
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>@L["Breadcrumb.Categories"]</BreadcrumbItem>
+            <Breadcrumb>
+                <BreadcrumbItem>Home</BreadcrumbItem>
+                <BreadcrumbItem>@L["Breadcrumb.Categories"]</BreadcrumbItem>
+            </Breadcrumb>
         </Breadcrumb>
-    </Breadcrumb>
+    </PageHeaderBreadcrumb>
+</PageHeader>
 
-    <ChildContent>
+  
+
         <div class="cardList">
             <AntList TItem="Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>"
                      DataSource="ViewModel.Categories"
@@ -42,13 +46,14 @@
                                     </DescriptionTemplate>
                                 </CardMeta>
                                 <Divider>Children</Divider>
-                                <Tree ShowIcon="true" DataSource="context.Children" TitleExpression="x => ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).Data.Name"
-                                      ChildrenExpression="x =>  ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).Children"
-                                      IconExpression="x => ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).Data.Icon"
-                                      IsLeafExpression="x => ((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)x.DataItem).IsLeaf">
+                                <Tree ShowIcon="true" DataSource="context.Children.ToList()" TItem="Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>"
+                                      TitleExpression="x => x.DataItem.Data.Name"
+                                      ChildrenExpression="x =>  x.DataItem.Children.ToList()"
+                                      IconExpression="x => x.DataItem.Data.Icon"
+                                      IsLeafExpression="x => x.DataItem.IsLeaf">
                                     <TitleTemplate Context="node">
                                         <span>@node.Title</span>
-                                        <Icon Type="edit" Theme="outline" OnClick="() => Edit(((Maincotech.Data.TreeExtensions.ITree<CategoryViewModel>)node.DataItem).Data.Id)" />
+                                        <Icon Type="edit" Theme="outline" OnClick="() => Edit(node.DataItem.Data.Id)" />
                                     </TitleTemplate>
 
                                     <TitleIconTemplate Context="node">
@@ -61,8 +66,7 @@
                 </ListItem>
             </AntList>
         </div>
-    </ChildContent>
-</AntDesign.Pro.Layout.PageContainer>
+
 
 @code
 {

@@ -3,18 +3,22 @@
 
 @if (IndexViewModel != null)
 {
-    <AntDesign.Pro.Layout.PageContainer>
-
+<PageHeader>
+    <PageHeaderContent>
         <Content>
             <div style="text-align: center;background-color:transparent">
                 <Search Placeholder="@L["Placeholder.SearchBlog"]"
                         EnterButton="@L["Button.Search"]"
                         @bind-Value="IndexViewModel.SearchText"
                         Size="large"
-                        Style="max-width: 522px; width: 100%;" OnSearch="Search" />
+                        Style="max-width: 522px;" OnSearch="Search" />
             </div>
-        </Content>
-        <ChildContent>
+        </Content>        
+    </PageHeaderContent>   
+</PageHeader>
+       
+              
+   
             <Row Gutter="24">
                 <AntDesign.Col Span="5">
                     <Card Style="margin-bottom: 24px;" Title="@L["Blogs.Categories"]" Loading="IndexViewModel.IsLoadingCategories"
@@ -58,8 +62,8 @@
                     </Card>
                 </AntDesign.Col>
             </Row>
-        </ChildContent>
-    </AntDesign.Pro.Layout.PageContainer>
+        
+
 }
 
 @code{

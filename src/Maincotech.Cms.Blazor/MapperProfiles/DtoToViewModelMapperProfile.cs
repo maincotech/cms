@@ -28,9 +28,8 @@ namespace Maincotech.Cms.Blazor.MapperProfiles
 
             CreateMap<ArticleDto, BlogViewModel>()
               .ForMember(dest => dest.CategoryId, opt => opt.MapFrom((src, dest, destMember, context) => src.CategoryId.ToString()))
-              .ForMember(dest => dest.CurrentTags, opt => opt.MapFrom((src, dest, destMember, context) => src.Tags.IsNotNullOrEmpty() ? src.Tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>()))
+              .ForMember(dest => dest.SelectedTags, opt => opt.MapFrom((src, dest, destMember, context) => src.Tags.IsNotNullOrEmpty() ? src.Tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>()))
               .ForMember(dest => dest.PageName, opt => opt.MapFrom((src, dest, destMember, context) => src.PageName.Replace(".html", "")));
-
 
             CreateMap<LocalizedArticleDto, Maincotech.Cms.Pages.Blog.BlogViewModel>();
 

@@ -30,7 +30,8 @@ namespace Maincotech.Cms.Blazor.MapperProfiles
                  new Guid?(Guid.Parse(src.ParentId))));
 
             CreateMap<BlogViewModel, ArticleDto>()
-               .ForMember(dest => dest.PageName, opt => opt.MapFrom((src, dest, destMember, context) => $"{src.PageName}.html"));
+               .ForMember(dest => dest.PageName, opt => opt.MapFrom((src, dest, destMember, context) => $"{src.PageName}.html"))
+               .ForMember(dest => dest.Tags, opt=> opt.MapFrom((src, dest, destMember, context) => string.Join(',',src.SelectedTags)));
         }
 
         private static CascaderNode Convert(TreeExtensions.ITree<Category> src)

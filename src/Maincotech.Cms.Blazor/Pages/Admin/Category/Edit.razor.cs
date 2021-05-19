@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Maincotech.Cms.Pages.Admin.Category
 {
-    [Authorize(Policy = "Admin")]
     public partial class Edit
     {
         [Parameter] public string Id { get; set; }

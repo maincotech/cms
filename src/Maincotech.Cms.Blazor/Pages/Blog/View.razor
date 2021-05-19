@@ -1,18 +1,24 @@
 ﻿@page "/blogs/{PageName}"
 
+
+
 @inherits RuiComponentBase<BlogViewModel>
 
-<AntDesign.Pro.Layout.PageContainer>
-    <Content>
-        <div style="text-align: center;background-color:transparent">
-            <Search Placeholder="@L["Placeholder.SearchBlog"]"
-                    EnterButton="@L["Button.Search"]"
-                    @bind-Value="IndexViewModel.SearchText"
-                    Size="large"
-                    Style="max-width: 522px; width: 100%;" OnSearch="Search" />
-        </div>
-    </Content>
-    <ChildContent>
+<PageHeader>
+    <PageHeaderContent>
+        <Content>
+            <div style="text-align: center;background-color:transparent">
+                <Search Placeholder="@L["Placeholder.SearchBlog"]"
+                        EnterButton="@L["Button.Search"]"
+                        @bind-Value="IndexViewModel.SearchText"
+                        Size="large"
+                        Style="max-width: 522px; width: 100%;" OnSearch="Search" />
+            </div>
+        </Content>
+    </PageHeaderContent>
+</PageHeader>
+ 
+
         <Row Gutter="24">
             <AntDesign.Col Span="8">
                 <Card Style="margin-bottom: 24px;" Title="@L["Blogs.Categories"]" Loading="IsLoadingCategories"
@@ -48,11 +54,10 @@
                     </Extra>
                     <Body>
                         <article>
-                            @((MarkupString)ViewModel.HtmlContent)
+                            <Preview Markdown="@ViewModel.MarkdownContent" />
+                            
                         </article>
                     </Body>
                 </Card>
             </AntDesign.Col>
         </Row>
-    </ChildContent>
-</AntDesign.Pro.Layout.PageContainer>

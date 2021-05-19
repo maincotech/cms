@@ -33,14 +33,20 @@
             //   routeManager.RegisterRoutesInAssembly(typeof(CmsBlazorExtensions).Assembly, options.AreaName);
 
             //register admin routes
-            routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Blog.Index), options.AdminAreaName);
-            routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Blog.Edit), options.AdminAreaName);
-            routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Category.Index), options.AdminAreaName);
-            routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Category.Edit), options.AdminAreaName);
+            if (options.AdminLayout != null)
+            {
+                routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Blog.Index), options.AdminAreaName);
+                routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Blog.Edit), options.AdminAreaName);
+                routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Category.Index), options.AdminAreaName);
+                routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Admin.Category.Edit), options.AdminAreaName);
+            }
 
             //register user routes
-            routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Blog.View), options.UserAreaName);
-            routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Blog.Index), options.UserAreaName);
+            if (options.UserLayout != null)
+            {
+                routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Blog.View), options.UserAreaName);
+                routeManager.RegisterRoute(typeof(Maincotech.Cms.Pages.Blog.Index), options.UserAreaName);
+            }
         }
 
         private static void RegisterLayout(IServiceProvider serviceProvider, CmsOptions options)

@@ -2,106 +2,120 @@
 @page "/blogs/edit/{Id}"
 @inherits RuiComponentBase<BlogViewModel>
 
-<AntDesign.Pro.Layout.PageContainer Title="@L["Blog.Edit.Title"]">
-    <Breadcrumb>
+<PageHeader>
+    <PageHeaderBreadcrumb>
         <Breadcrumb>
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>@L["Breadcrumb.Blogs"]</BreadcrumbItem>
-            <BreadcrumbItem>@L["Breadcrumb.Blogs.Edit"]</BreadcrumbItem>
+            <Breadcrumb>
+                <BreadcrumbItem>Home</BreadcrumbItem>
+                <BreadcrumbItem>@L["Breadcrumb.Blogs"]</BreadcrumbItem>
+                <BreadcrumbItem>@L["Breadcrumb.Blogs.Edit"]</BreadcrumbItem>
+            </Breadcrumb>
         </Breadcrumb>
-    </Breadcrumb>
-    <ChildContent>
+    </PageHeaderBreadcrumb>
+</PageHeader>
 
-        <Form Model="ViewModel" Loading="IsLoading" OnFinish="async(ctx) => await OnFinish(ctx)" OnFinishFailed="OnFinishFailed">
-            <Row Gutter="24">
-                <AntDesign.Col Span="18" Style="margin-bottom: 24px;">
-                    <Card>
-                        <FormItem>
-                            <Input Placeholder="@L["Placeholder.InputTitle"]" @bind-Value="context.Title" />
-                        </FormItem>
-                        <Editor @bind-Value="context.MarkdownContent" @bind-Html="context.HtmlContent" Mode="wysiwyg" MinHeight="500" Options="@EditorOptions" />
-                    </Card>
-                </AntDesign.Col>
-                <AntDesign.Col Span="6" Style="margin-bottom: 24px;">
-                    <Card Title="@L["Blog.Edit.Settings"]">
-                        <div>
-                            <FormItem Label="@L["Blog.Edit.Category"]">
-                                <Cascader ChangeOnSelect="true" @bind-Value="@context.CategoryId" Options="@context.Categories"></Cascader>
-                            </FormItem>
 
-                            <FormItem Label="@L["Blog.Edit.Summary"]">
-                                <TextArea Placeholder="@L["Placeholder.InputSummary"]" MaxRows="5" @bind-Value="@context.Summary" />
-                            </FormItem>
 
-                            <FormItem Label="@L["Blog.Edit.Tags"]">
-                                @if (ViewModel.IsLoaded)
-                                {
-                                    <Select Mode="tags"
-                                            TItem="string"
-                                            @bind-Value="context.Tags"
-                                            DefaultValue="context.CurrentTags"
-                                            Style="width: 100%"
-                                            Placeholder="@L["Placeholder.InputTags"]">
-                                        @foreach (var item in ViewModel.AllTags)
-                                        {
-                                            <SelectOption Value="@item">@item</SelectOption>
-                                        }
-                                    </Select>
-                                }
-                            </FormItem>
+<Form Model="ViewModel" Loading="IsLoading" OnFinish="async(ctx) => await OnFinish(ctx)" OnFinishFailed="OnFinishFailed">
+    <Row Gutter="24">
+        <AntDesign.Col Span="18" Style="margin-bottom: 24px;">
+            <Card>
+                <FormItem>
+                    <Input Placeholder="@L["Placeholder.InputTitle"]" @bind-Value="context.Title" />
+                </FormItem>
+                <Editor @bind-Value="context.MarkdownContent" Mode="wysiwyg" MinHeight="500" Options="@EditorOptions" />
+            </Card>
+        </AntDesign.Col>
+        <AntDesign.Col Span="6" Style="margin-bottom: 24px;">
+            <Card Title="@L["Blog.Edit.Settings"]">
+                <div>
+                    <FormItem Label="@L["Blog.Edit.Category"]">
+                        <Cascader ChangeOnSelect="true" @bind-Value="@context.CategoryId" Options="@context.Categories"></Cascader>
+                    </FormItem>
 
-                            <FormItem Label="@L["Blog.Edit.ContentLanguage"]">
-                                <AutoComplete @bind-Value="context.ContentLanguage" Options="AllLanguages" />
-                            </FormItem>
+                    <FormItem Label="@L["Blog.Edit.Summary"]">
+                        <TextArea Placeholder="@L["Placeholder.InputSummary"]" MaxRows="5" @bind-Value="@context.Summary" />
+                    </FormItem>
 
-                            <FormItem Label="Icon">
-                                <Upload Action="@Options.JqueryUpload"
-                                        Name="avatar"
-                                        Class="avatar-uploader"
-                                        ListType="picture-card"
-                                        ShowUploadList="false"
-                                        BeforeUpload="BeforeUpload"
-                                        OnChange="HandleChange">
-                                    @if (!string.IsNullOrWhiteSpace(ViewModel.Cover))
+                    <FormItem Label="@L["Blog.Edit.Tags"]">
+                        @if (ViewModel.IsLoaded)
+                        {
+                            <Select Mode="tags"
+                                    @bind-Values="@context.SelectedTags"
+                                    Placeholder="@L["Placeholder.InputTags"]"
+                                    EnableSearch
+                                    HideSelected
+                                    TItemValue="string"
+                                    TItem="string">
+                                <SelectOptions>
+                                    @foreach (var item in ViewModel.AllTags)
                                     {
-                                        <img src="@ViewModel.Cover" alt="Cover" style="width: 100%" />
+                                        <SelectOption TItemValue="string" TItem="string" Value=@item Label=@item />
                                     }
-                                    else
-                                    {
-                                        <div>
-                                            <Icon Spin="IsUploadingIcon" Type="@(IsUploadingIcon?"Loading":"plus")"></Icon>
-                                            <div className="ant-upload-text">@L["Button.Upload"]</div>
-                                        </div>
-                                    }
-                                </Upload>
-                            </FormItem>
+                                </SelectOptions>
+                            </Select>
+                        }
+                    </FormItem>
 
-                            <FormItem Label="@L["Blog.Edit.PageName"]">
-                                <AntDesign.Input Placeholder="@L["Placeholder.InputPageName"]" @bind-Value="@context.PageName">
-                                    <AddOnAfter>.html</AddOnAfter>
-                                </AntDesign.Input>
-                            </FormItem>
+                    <FormItem Label="@L["Blog.Edit.ContentLanguage"]">
+                        <AutoComplete @bind-Value="context.ContentLanguage" Options="AllLanguages" />
+                    </FormItem>
 
-                            <FormItem Label="@L["Blog.Edit.Published"]">
-                                <Checkbox @bind-Value="context.IsPublished" />
-                            </FormItem>
+                    <FormItem Label="Icon">
+                        <Upload Action="@Options.JqueryUpload"
+                                Name="avatar"
+                                Class="avatar-uploader"
+                                ListType="picture-card"
+                                ShowUploadList="false"
+                                BeforeUpload="BeforeUpload"
+                                OnChange="HandleChange">
+                            @if (!string.IsNullOrWhiteSpace(ViewModel.Cover))
+                            {
+                                <img src="@ViewModel.Cover" alt="Cover" style="width: 100%" />
+                            }
+                            else
+                            {
+                                <div>
+                                    <Icon Spin="IsUploadingIcon" Type="@(IsUploadingIcon?"Loading":"plus")"></Icon>
+                                    <div className="ant-upload-text">@L["Button.Upload"]</div>
+                                </div>
+                            }
+                        </Upload>
+                    </FormItem>
 
-                            <Divider></Divider>
-                            <div>
-                                <Button OnClick="async() => await ExportAsync()">
-                                    @L["Button.Export"]
-                                </Button>
-                                <Button Type="@ButtonType.Primary" HtmlType="submit">
-                                    @L["Button.Save"]
-                                </Button>
-                                <Button OnClick="Cancel">
-                                    @L["Button.Cancel"]
-                                </Button>
-                            </div>
-                        </div>
-                    </Card>
-                </AntDesign.Col>
-            </Row>
-        </Form>
-    </ChildContent>
-</AntDesign.Pro.Layout.PageContainer>
+                    <FormItem Label="@L["Blog.Edit.PageName"]">
+                        <AntDesign.Input Placeholder="@L["Placeholder.InputPageName"]" @bind-Value="@context.PageName">
+                            <AddOnAfter>.html</AddOnAfter>
+                        </AntDesign.Input>
+                    </FormItem>
+
+                    <FormItem Label="@L["Blog.Edit.Published"]">
+                        <Checkbox @bind-Value="context.IsPublished" />
+                    </FormItem>
+
+                    <Divider></Divider>
+                    <div>
+                        <Button OnClick="async() => await ExportAsync()">
+                            @L["Button.Export"]
+                        </Button>
+                        <Button Type="@ButtonType.Primary" HtmlType="submit">
+                            @L["Button.Save"]
+                        </Button>
+                        <Button OnClick="Cancel">
+                            @L["Button.Cancel"]
+                        </Button>
+                    </div>
+                </div>
+            </Card>
+        </AntDesign.Col>
+    </Row>
+</Form>
+@code
+{
+    private readonly string[] _items = new[] { "Apples", "Nails", "Bananas", "Helicopters" };
+
+    private void OnSelectedItemsChangedHandler(IEnumerable<string> values)
+    {
+        Console.WriteLine($"selected: ${string.Join(",", values)}");
+    }
+}

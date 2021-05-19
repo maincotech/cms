@@ -120,6 +120,7 @@ namespace Maincotech.Cms.Pages.Admin.Blog
         public DateTime CreationTime { get; set; }
 
         public List<string> AllTags { get; set; } = new List<string>();
+        public IEnumerable<string> SelectedTags { get; set; } = new List<string>();
 
         private string _Author;
 
@@ -186,8 +187,6 @@ namespace Maincotech.Cms.Pages.Admin.Blog
             get => _Tags;
             set => this.RaiseAndSetIfChanged(ref _Tags, value);
         }
-
-        public string[] CurrentTags { get; set; } = Array.Empty<string>();
 
         private string _CategoryId;
 

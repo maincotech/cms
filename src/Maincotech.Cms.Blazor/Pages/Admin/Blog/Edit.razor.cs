@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Maincotech.Cms.Pages.Admin.Blog
 {
-    [Authorize(Policy = "Admin")]
     public partial class Edit
     {
         [Parameter] public string Id { get; set; }

@@ -93,8 +93,8 @@ namespace Maincotech.Cms.Services
                     {
                         tagEntity = new Tag() { Id = Guid.NewGuid(), TagType = TagType.Public, Name = tag };
                         _tagRepository.Add(tagEntity);
-                        tagEntities.Add(tagEntity);
                     }
+                    tagEntities.Add(tagEntity);
                 }
             }
 

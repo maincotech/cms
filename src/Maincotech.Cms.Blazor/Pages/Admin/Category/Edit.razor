@@ -3,68 +3,69 @@
 
 @inherits RuiComponentBase<CategoryViewModel>
 
-<AntDesign.Pro.Layout.PageContainer Title="@L["Breadcrumb.Categories.Edit"]">
-    <Breadcrumb>
+<PageHeader>
+    <PageHeaderBreadcrumb>
         <Breadcrumb>
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>@L["Breadcrumb.Categories"]</BreadcrumbItem>
-            <BreadcrumbItem>@L["Breadcrumb.Categories.Edit"]</BreadcrumbItem>
+            <Breadcrumb>
+                <BreadcrumbItem>Home</BreadcrumbItem>
+                <BreadcrumbItem>@L["Breadcrumb.Categories"]</BreadcrumbItem>
+                <BreadcrumbItem>@L["Breadcrumb.Categories.Edit"]</BreadcrumbItem>
+            </Breadcrumb>
         </Breadcrumb>
-    </Breadcrumb>
-    <ChildContent>
-        <Card>
-            <Form Model="@ViewModel"
-                  Style="margin-top: 8px;"
-                  LabelCol="new ColLayoutParam { Span = 7 }"
-                  WrapperCol="new ColLayoutParam { Span = 17 }">
+    </PageHeaderBreadcrumb>
+</PageHeader>
 
-                <FormItem Label="@L["Label.Name"]">
-                    <LocalizableInput @bind-Name="@context.Name" SupportLanguages="Options.SupportLanguages" OnAddTerms="ViewModel.AddTermsOfName" OnGetTerms="ViewModel.GetTermsOfName">
-                        <Input @bind-Value="@context.Name" />
-                    </LocalizableInput>
-                </FormItem>
+<Card>
+    <Form Model="@ViewModel"
+          Style="margin-top: 8px;"
+          LabelCol="new ColLayoutParam { Span = 7 }"
+          WrapperCol="new ColLayoutParam { Span = 17 }">
 
-                <FormItem Label="@L["Label.Description"]">
-                    <LocalizableInput @bind-Name="@context.Description" SupportLanguages="Options.SupportLanguages" OnAddTerms="ViewModel.AddTermsOfDescription" OnGetTerms="ViewModel.GetTermsOfDescription">
-                        <TextArea MinRows="2" @bind-Value="@context.Description"></TextArea>
-                    </LocalizableInput>
-                </FormItem>
+        <FormItem Label="@L["Label.Name"]">
+            <LocalizableInput @bind-Name="@context.Name" SupportLanguages="Options.SupportLanguages" OnAddTerms="ViewModel.AddTermsOfName" OnGetTerms="ViewModel.GetTermsOfName">
+                <Input @bind-Value="@context.Name" />
+            </LocalizableInput>
+        </FormItem>
 
-                <FormItem Label="Icon">
-                    <Upload Action="@Options.JqueryUpload"
-                            Name="avatar"
-                            Class="avatar-uploader"
-                            ListType="picture-card"
-                            ShowUploadList="false"
-                            BeforeUpload="BeforeUpload"
-                            OnChange="HandleChange">
-                        @if (!string.IsNullOrWhiteSpace(ViewModel.Icon))
-                        {
-                            <img src="@ViewModel.Icon" alt="avatar" style="width: 100%" />
-                        }
-                        else
-                        {
-                            <div>
-                                <Icon Spin="IsUploadingIcon" Type="@(IsUploadingIcon?"Loading":"plus")"></Icon>
-                                <div className="ant-upload-text">@L["Button.Upload"]</div>
-                            </div>
-                        }
-                    </Upload>
-                </FormItem>
+        <FormItem Label="@L["Label.Description"]">
+            <LocalizableInput @bind-Name="@context.Description" SupportLanguages="Options.SupportLanguages" OnAddTerms="ViewModel.AddTermsOfDescription" OnGetTerms="ViewModel.GetTermsOfDescription">
+                <TextArea MinRows="2" @bind-Value="@context.Description"></TextArea>
+            </LocalizableInput>
+        </FormItem>
 
-                <FormItem Label="@L["Category.Index.ParentCategory"]">
-                    <Cascader ChangeOnSelect="true" @bind-Value="@ViewModel.ParentId" Options="@ViewModel.PossibleParents"></Cascader>
-                </FormItem>
+        <FormItem Label="Icon">
+            <Upload Action="@Options.JqueryUpload"
+                    Name="avatar"
+                    Class="avatar-uploader"
+                    ListType="picture-card"
+                    ShowUploadList="false"
+                    BeforeUpload="BeforeUpload"
+                    OnChange="HandleChange">
+                @if (!string.IsNullOrWhiteSpace(ViewModel.Icon))
+                {
+                    <img src="@ViewModel.Icon" alt="avatar" style="width: 100%" />
+                }
+                else
+                {
+                    <div>
+                        <Icon Spin="IsUploadingIcon" Type="@(IsUploadingIcon?"Loading":"plus")"></Icon>
+                        <div className="ant-upload-text">@L["Button.Upload"]</div>
+                    </div>
+                }
+            </Upload>
+        </FormItem>
 
-                <FormItem Label=" " Style="margin-top:32px">
-                    <Button OnClick="Save">
-                        @L["Button.Save"]
-                    </Button>
-                    <Button Style="margin-left:8px" OnClick="Cancel">
-                        @L["Button.Cancel"]
-                    </Button>
-                </FormItem>
-            </Form>
-        </Card>
-    </ChildContent>
-</AntDesign.Pro.Layout.PageContainer>
+        <FormItem Label="@L["Category.Index.ParentCategory"]">
+            <Cascader ChangeOnSelect="true" @bind-Value="@ViewModel.ParentId" Options="@ViewModel.PossibleParents"></Cascader>
+        </FormItem>
+
+        <FormItem Label=" " Style="margin-top:32px">
+            <Button OnClick="Save">
+                @L["Button.Save"]
+            </Button>
+            <Button Style="margin-left:8px" OnClick="Cancel">
+                @L["Button.Cancel"]
+            </Button>
+        </FormItem>
+    </Form>
+</Card>

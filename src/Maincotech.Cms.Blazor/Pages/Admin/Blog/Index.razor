@@ -1,27 +1,36 @@
 ﻿@page "/blogs"
 @inherits RuiComponentBase<IndexViewModel>
-<AntDesign.Pro.Layout.PageContainer Title="@L["Blog.Index.BlogList"]">
-    <Breadcrumb>
+<PageHeader>
+    <PageHeaderBreadcrumb>
         <Breadcrumb>
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>@L["Breadcrumb.Blogs"]</BreadcrumbItem>
+            <Breadcrumb>
+                <BreadcrumbItem>Home</BreadcrumbItem>
+                <BreadcrumbItem>@L["Breadcrumb.Blogs"]</BreadcrumbItem>
+            </Breadcrumb>
         </Breadcrumb>
-    </Breadcrumb>
-    <Content>
-        <div style="text-align: center;">
-            <Search Placeholder="@L["Placeholder.SearchInput"]"
-                    EnterButton="@L["Button.Search"]"
-                    @bind-Value="ViewModel.SearchText"
-                    Size="large"
-                    Style="max-width: 522px; width: 100%;" OnSearch="() => Search()" />
-        </div>
-    </Content>
-    <ExtraContent>
+    </PageHeaderBreadcrumb>
+    <PageHeaderContent>
+        <Content>
+            <div style="text-align: center;">
+                <Search Placeholder="@L["Placeholder.SearchInput"]"
+                        EnterButton="@L["Button.Search"]"
+                        @bind-Value="ViewModel.SearchText"
+                        Size="large"
+                        Style="max-width: 522px; width: 100%;" OnSearch="() => Search()" />
+            </div>
+        </Content>
+    </PageHeaderContent>
+    <PageHeaderExtra>
         <div class="extraImg">
             <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png" />
         </div>
-    </ExtraContent>
-    <ChildContent>
+    </PageHeaderExtra>
+</PageHeader>
+
+  
+   
+        
+  
         <Card>
             <Form Model="ViewModel" Loading="ViewModel.IsLoadingCategories"
                   Layout="inline">
@@ -61,5 +70,4 @@
                 </Skeleton>
             </ChildContent>
         </Card>
-    </ChildContent>
-</AntDesign.Pro.Layout.PageContainer>
+   

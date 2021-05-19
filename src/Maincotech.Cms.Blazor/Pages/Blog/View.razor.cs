@@ -64,6 +64,7 @@ namespace Maincotech.Cms.Pages.Blog
 
         protected override async Task OnParametersSetAsync()
         {
+            
             await base.OnParametersSetAsync();
             IsLoading = true;
             if (PageName.IsNullOrEmpty())

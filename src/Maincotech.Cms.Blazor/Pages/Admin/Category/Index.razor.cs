@@ -5,8 +5,7 @@ using System;
 using System.Threading.Tasks;
 
 namespace Maincotech.Cms.Pages.Admin.Category
-{
-    [Authorize(Policy = "Admin")]
+{    
     public partial class Index
     {
         [Inject]
